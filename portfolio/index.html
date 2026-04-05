@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fernando Reis — Product Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0a0a0a;
+            --bg-card: #141414;
+            --bg-card-hover: #1c1c1c;
+            --accent: #22c55e;
+            --accent-dim: rgba(34, 197, 94, 0.08);
+            --text: #f5f5f5;
+            --text-muted: #a3a3a3;
+            --text-dim: #404040;
+            --border: #262626;
+            --radius: 12px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ── Language toggle ── */
+        .pt, .es { display: none; }
+        .lang-pt .en { display: none; }
+        .lang-pt .pt { display: revert; }
+        .lang-es .en { display: none; }
+        .lang-es .pt { display: none; }
+        .lang-es .es { display: revert; }
+
+        .lang-selector {
+            display: flex;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .lang-opt {
+            background: transparent;
+            border: none;
+            border-right: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.35rem 0.65rem;
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            transition: color 0.2s, background 0.2s;
+            font-family: inherit;
+            line-height: 1;
+        }
+        .lang-opt:last-child { border-right: none; }
+        .lang-opt:hover { color: var(--text); }
+        .lang-opt.active { background: var(--accent-dim); color: var(--accent); }
+
+        /* ── Navigation ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+            background: rgba(10,10,10,0.85);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text);
+            text-decoration: none;
+            letter-spacing: -0.01em;
+        }
+
+        .nav-links { display: flex; gap: 2rem; list-style: none; flex: 1; justify-content: center; }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+
+        /* ── Section wrapper ── */
+        .section-wrap {
+            padding: 5rem 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* ── Hero ── */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 5rem max(2rem, calc((100vw - 1100px) / 2)) 4rem;
+        }
+
+        .hero-inner {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 5rem;
+            align-items: center;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .hero-name {
+            font-size: clamp(2.75rem, 5vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-title {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 1.75rem;
+            font-weight: 400;
+        }
+
+        .hero-tagline {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 540px;
+            margin-bottom: 2.5rem;
+            line-height: 1.75;
+            font-style: italic;
+            border-left: 2px solid var(--accent);
+            padding-left: 1rem;
+        }
+
+        .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+            padding: 0.8rem 1.75rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.875rem;
+            transition: opacity 0.2s;
+        }
+        .btn-primary:hover { opacity: 0.85; }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.8rem 1.75rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: border-color 0.2s;
+        }
+        .btn-outline:hover { border-color: #555; }
+
+        .hero-photo-wrap {
+            width: 270px;
+            height: 330px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .hero-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+        }
+
+        /* ── Section header ── */
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 2rem;
+        }
+
+        /* ── About ── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            margin-bottom: 1.1rem;
+            font-size: 0.975rem;
+            line-height: 1.85;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem 1.25rem;
+        }
+
+        .stat-number {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.03em;
+        }
+
+        .stat-label {
+            font-size: 0.775rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ── Projects ── */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            cursor: pointer;
+            transition: border-color 0.25s, background 0.25s, transform 0.25s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            background: var(--bg-card-hover);
+            transform: translateY(-5px);
+        }
+
+        .project-card.featured {
+            grid-column: span 3;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-template-rows: auto auto auto auto;
+            column-gap: 3rem;
+            border-color: rgba(34,197,94,0.35);
+            background: linear-gradient(135deg, rgba(34,197,94,0.05) 0%, var(--bg-card) 60%);
+            padding: 2.5rem;
+        }
+        .project-card.featured:hover {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(34,197,94,0.09) 0%, var(--bg-card-hover) 60%);
+        }
+        .project-card.featured .project-icon { width: 2.5rem; height: 2.5rem; }
+        .project-card.featured .project-title { font-size: 1.35rem; }
+        .project-card.featured .project-subtitle { font-size: 0.925rem; max-width: 640px; }
+        .project-card.featured .project-tags { grid-column: 1; }
+        .project-card.featured .project-cta { grid-column: 1; }
+
+        .featured-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-dim);
+            border: 1px solid rgba(34,197,94,0.25);
+            border-radius: 99px;
+            padding: 0.25rem 0.75rem;
+            width: fit-content;
+            margin-bottom: 1rem;
+        }
+        .project-card.featured .featured-badge { grid-column: 1 / -1; }
+
+        .featured-metric {
+            grid-column: 2;
+            grid-row: 2 / 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-left: 1px solid var(--border);
+            padding-left: 3rem;
+            gap: 1.5rem;
+            align-self: center;
+        }
+        .featured-metric-item { text-align: center; }
+        .featured-metric-number {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -0.03em;
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+        .featured-metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .project-icon { width: 2rem; height: 2rem; margin-bottom: 1.25rem; color: var(--text-muted); display: block; flex-shrink: 0; }
+
+        .project-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            line-height: 1.3;
+        }
+
+        .project-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.65;
+            flex: 1;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 0.25rem 0.65rem;
+            border-radius: 99px;
+            background: var(--accent-dim);
+            color: var(--accent);
+            border: 1px solid rgba(34,197,94,0.15);
+        }
+
+        .project-cta {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .project-cta::after { content: '→'; transition: transform 0.2s; }
+        .project-card:hover .project-cta::after { transform: translateX(5px); }
+
+        /* ── Experience ── */
+        .timeline { position: relative; padding-left: 2rem; }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 10px; bottom: 0;
+            width: 1px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2.5rem;
+        }
+        .timeline-item:last-child { padding-bottom: 0; }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.38rem;
+            top: 8px;
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--bg);
+        }
+
+        .timeline-period {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            margin-bottom: 0.2rem;
+        }
+
+        .timeline-role { font-size: 1rem; font-weight: 700; margin-bottom: 0.15rem; }
+        .timeline-company { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+
+        .timeline-desc {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.75;
+            max-width: 640px;
+        }
+
+        /* ── Education ── */
+        .edu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .edu-item-degree {
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 0.4rem;
+        }
+
+        .edu-item-meta {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .edu-subsection-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-top: 3rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .cert-list {
+            list-style: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .cert-item {
+            display: grid;
+            grid-template-columns: 4rem 1fr auto;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 0.9rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+        .cert-item:last-child { border-bottom: none; }
+        .cert-item:hover { background: var(--bg-card); }
+
+        .cert-period {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+
+        .cert-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .cert-institution {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        /* ── Skills ── */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+        }
+
+        .skill-group h3 {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+        .skill-tag {
+            font-size: 0.8rem;
+            padding: 0.35rem 0.85rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-muted);
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .skill-tag:hover { color: var(--text); border-color: #444; }
+
+        /* ── Contact ── */
+        .contact-desc {
+            color: var(--text-muted);
+            max-width: 440px;
+            margin: 0 auto 2.5rem;
+            font-size: 0.975rem;
+            line-height: 1.75;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .contact-link:hover { color: var(--text); border-color: #555; }
+
+        /* ── Footer ── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.78rem;
+        }
+
+        /* ── Modal ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            z-index: 200;
+            overflow-y: auto;
+            padding: 2rem;
+            backdrop-filter: blur(6px);
+        }
+        .modal-overlay.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .modal {
+            background: #141414;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 700px;
+            width: 100%;
+            margin: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem; right: 1.5rem;
+            background: #1f1f1f;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 34px; height: 34px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .modal-close:hover { color: var(--text); border-color: #555; }
+
+        .modal-eyebrow {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            padding-right: 2.5rem;
+        }
+
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 2rem;
+        }
+
+        .modal-block { margin-bottom: 1.75rem; }
+
+        .modal-block-title {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-block p {
+            color: var(--text-muted);
+            font-size: 0.925rem;
+            line-height: 1.85;
+        }
+
+        .modal-block ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+
+        .modal-block ul li {
+            color: var(--text-muted);
+            font-size: 0.925rem;
+            line-height: 1.65;
+            padding-left: 1.35rem;
+            position: relative;
+        }
+        .modal-block ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 0.8rem;
+            top: 2px;
+        }
+
+        .modal-result {
+            background: rgba(34,197,94,0.06);
+            border: 1px solid rgba(34,197,94,0.2);
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+        }
+        .modal-result p { color: var(--text) !important; font-weight: 500; }
+
+        /* ── Hamburger ── */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            flex-shrink: 0;
+        }
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text-muted);
+            border-radius: 2px;
+            transition: transform 0.25s, opacity 0.25s;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* ── Mobile menu ── */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 57px;
+            left: 0; right: 0;
+            background: rgba(10,10,10,0.97);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            z-index: 99;
+        }
+        .mobile-menu.open { display: block; }
+        .mobile-menu ul { list-style: none; padding: 0.5rem 0; }
+        .mobile-menu ul li a {
+            display: block;
+            padding: 0.85rem 2rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            border-bottom: 1px solid var(--border);
+        }
+        .mobile-menu ul li:last-child a { border-bottom: none; }
+        .mobile-menu ul li a:hover { color: var(--text); }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .projects-grid { grid-template-columns: 1fr; }
+            .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
+            .featured-metric { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+            .hero-photo-wrap { width: 160px; height: 200px; }
+            .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .modal { padding: 2rem 1.5rem; }
+            .modal-title { font-size: 1.25rem; }
+        }
+
+        @media (max-width: 600px) {
+            .cert-item { grid-template-columns: 3rem 1fr; grid-template-rows: auto auto; }
+            .cert-institution { grid-column: 2; text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+    <a href="#hero" class="nav-logo">Fernando Reis</a>
+    <ul class="nav-links">
+        <li><a href="#about"><span class="en">About</span><span class="pt">Sobre</span><span class="es">Acerca de</span></a></li>
+        <li><a href="#projects"><span class="en">Projects</span><span class="pt">Projetos</span><span class="es">Proyectos</span></a></li>
+        <li><a href="#experience"><span class="en">Experience</span><span class="pt">Experiência</span><span class="es">Experiencia</span></a></li>
+        <li><a href="#education"><span class="en">Education</span><span class="pt">Educação</span><span class="es">Educación</span></a></li>
+        <li><a href="#skills"><span class="en">Skills</span><span class="pt">Habilidades</span><span class="es">Habilidades</span></a></li>
+        <li><a href="#contact"><span class="en">Contact</span><span class="pt">Contato</span><span class="es">Contacto</span></a></li>
+    </ul>
+    <div class="lang-selector" role="group" aria-label="Language">
+        <button class="lang-opt" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-opt" data-lang="pt" onclick="setLang('pt')">PT</button>
+        <button class="lang-opt" data-lang="es" onclick="setLang('es')">ES</button>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+    <ul>
+        <li><a href="#about" onclick="closeMobileMenu()"><span class="en">About</span><span class="pt">Sobre</span><span class="es">Acerca de</span></a></li>
+        <li><a href="#projects" onclick="closeMobileMenu()"><span class="en">Projects</span><span class="pt">Projetos</span><span class="es">Proyectos</span></a></li>
+        <li><a href="#experience" onclick="closeMobileMenu()"><span class="en">Experience</span><span class="pt">Experiência</span><span class="es">Experiencia</span></a></li>
+        <li><a href="#education" onclick="closeMobileMenu()"><span class="en">Education</span><span class="pt">Educação</span><span class="es">Educación</span></a></li>
+        <li><a href="#skills" onclick="closeMobileMenu()"><span class="en">Skills</span><span class="pt">Habilidades</span><span class="es">Habilidades</span></a></li>
+        <li><a href="#contact" onclick="closeMobileMenu()"><span class="en">Contact</span><span class="pt">Contato</span><span class="es">Contacto</span></a></li>
+    </ul>
+</div>
+
+<!-- ── Hero ── -->
+<section id="hero">
+    <div class="hero-inner">
+        <div>
+            <p class="hero-eyebrow">
+                <span class="en">Senior Product Manager · LATAM</span>
+                <span class="pt">Senior Product Manager · LATAM</span>
+                <span class="es">Senior Product Manager · LATAM</span>
+            </p>
+            <h1 class="hero-name">Fernando Reis</h1>
+            <p class="hero-title">Senior Product Manager &nbsp;·&nbsp; Supply Chain & AI &nbsp;·&nbsp; LATAM</p>
+            <p class="hero-tagline en">"Senior Product Manager operating in complex, global-scale environments. From expanding logistics systems into new markets — to independent products built with AI applied to real problems."</p>
+            <p class="hero-tagline pt">"Senior Product Manager que atua em ambientes complexos de escala global. Desde a expansão de sistemas logísticos a novos países — a produtos independentes construídos com IA aplicada a problemas reais."</p>
+            <p class="hero-tagline es">"Senior Product Manager que opera en entornos complejos de escala global. Desde la expansión de sistemas logísticos a nuevos países — hasta productos independientes construidos con IA aplicada a problemas reales."</p>
+            <div class="hero-ctas">
+                <a href="#projects" class="btn-primary">
+                    <span class="en">View Projects</span><span class="pt">Ver Projetos</span><span class="es">Ver Proyectos</span>
+                </a>
+                <a id="cv-download-hero" href="resumes/Fernando Reis - Resume (EN).pdf" download class="btn-outline">
+                    <span class="en">Download CV</span><span class="pt">Baixar CV</span><span class="es">Descargar CV</span>
+                </a>
+            </div>
+        </div>
+        <div class="hero-photo-wrap">
+            <img src="images/perfil-linkedin.jpeg" alt="Fernando Reis" class="hero-photo">
+        </div>
+    </div>
+</section>
+
+<!-- ── About ── -->
+<section id="about">
+    <div class="section-wrap">
+<p class="section-label"><span class="en">About</span><span class="pt">Sobre</span><span class="es">Acerca de</span></p>
+        <h2 class="section-title"><span class="en">Who I Am</span><span class="pt">Sobre Mim</span><span class="es">Sobre Mí</span></h2>
+        <div class="about-grid">
+            <div class="about-text">
+                <p class="en">I'm a Senior Product Manager with 6+ years building and scaling complex systems at global scale. At AB InBev, I lead product strategy for one of the world's largest supply chain platforms across Latin America — serving as technology reference for South America and aligning a team of 7 PMs.</p>
+                <p class="en">Industrial Engineer, MBA in AI at USP, fluent in English and Spanish. Based in São Paulo.</p>
+                <p class="pt">Sou Gerente de Produto Sênior com 6+ anos construindo e escalando sistemas complexos em escala global. Na AB InBev, lidero a estratégia de produto de uma das maiores plataformas de supply chain do mundo na América Latina — atuando como referência tecnológica para a América do Sul e alinhando uma equipe de 7 PMs.</p>
+                <p class="pt">Engenheiro de Produção, MBA em IA pela USP, fluente em inglês e espanhol. Baseado em São Paulo, BR.</p>
+                <p class="es">Soy Senior Product Manager con 6+ años construyendo y escalando sistemas complejos a escala global. En AB InBev, lidero la estrategia de producto de una de las mayores plataformas de supply chain del mundo en América Latina — siendo referencia tecnológica para América del Sur y alineando un equipo de 7 PMs.</p>
+                <p class="es">Ingeniero Industrial, MBA en IA en la USP, fluente en inglés y español. Basado en São Paulo, BR.</p>
+            </div>
+            <div class="about-stats">
+                <div class="stat-card">
+                    <div class="stat-number">6+</div>
+                    <div class="stat-label"><span class="en">Years in product management</span><span class="pt">Anos em gestão de produto</span><span class="es">Años en gestión de producto</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5+</div>
+                    <div class="stat-label"><span class="en">Countries managed simultaneously</span><span class="pt">Países gerenciados simultaneamente</span><span class="es">Países gestionados simultáneamente</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">30+</div>
+                    <div class="stat-label"><span class="en">Startups evaluated in innovation pipeline</span><span class="pt">Startups avaliadas no pipeline de inovação</span><span class="es">Startups evaluadas en el pipeline de innovación</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Languages: PT · EN · ES</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Projects ── -->
+<section id="projects">
+    <div class="section-wrap">
+<p class="section-label"><span class="en">Featured Work</span><span class="pt">Trabalhos em Destaque</span><span class="es">Trabajos Destacados</span></p>
+        <h2 class="section-title"><span class="en">Projects</span><span class="pt">Projetos</span><span class="es">Proyectos</span></h2>
+        <div class="projects-grid">
+
+            <div class="project-card featured" onclick="openModal('modal-karolg')">
+                <div class="featured-badge"><span class="en">Featured Project</span><span class="pt">Projeto em Destaque</span><span class="es">Proyecto Destacado</span></div>
+                <div>
+                    <svg class="project-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+                    <h3 class="project-title">
+                        <span class="en">Platform Built for Artist Karol G.</span>
+                        <span class="pt">Plataforma feita para a artista Karol G.</span>
+                        <span class="es">Plataforma creada para la artista Karol G.</span>
+                    </h3>
+                    <p class="project-subtitle en">Karol G, one of the world's most-streamed artists, needed a guest management and auction platform for her annual charity gala by the Con Cora Foundation in Miami. I was invited to build this solution and delivered it in two months.</p>
+                    <p class="project-subtitle pt">Karol G, que é uma das artistas mais ouvidas do mundo, precisava de uma plataforma de gestão de convidados e leilão para o seu evento de gala pela Fundação Con Cora que acontece anualmente em Miami. Fui o convidado para desenvolver essa solução e a desenvolvi em dois meses.</p>
+                    <p class="project-subtitle es">Karol G, una de las artistas más escuchadas del mundo, necesitaba una plataforma de gestión de invitados y subasta para su gala benéfica anual de la Fundación Con Cora en Miami. Fui invitado a desarrollar esta solución y la entregué en dos meses.</p>
+                    <div class="project-tags">
+                        <span class="tag">Product Build</span>
+                        <span class="tag">End-to-end</span>
+                        <span class="tag">Live Platform</span>
+                        <span class="tag">Charity</span>
+                    </div>
+                    <span class="project-cta"><span class="en">View case study</span><span class="pt">Ver case</span><span class="es">Ver caso</span></span>
+                </div>
+                <div class="featured-metric">
+                    <div class="featured-metric-item">
+                        <div class="featured-metric-number">$1M+</div>
+                        <div class="featured-metric-label"><span class="en">raised for the<br>foundation</span><span class="pt">arrecadados para<br>a fundação</span><span class="es">recaudados para<br>la fundación</span></div>
+                    </div>
+                    <div class="featured-metric-item">
+                        <div class="featured-metric-number">400+</div>
+                        <div class="featured-metric-label"><span class="en">guests on the<br>platform</span><span class="pt">convidados na<br>plataforma</span><span class="es">invitados en<br>la plataforma</span></div>
+                    </div>
+                    <div class="featured-metric-item">
+                        <div class="featured-metric-number">2mo</div>
+                        <div class="featured-metric-label"><span class="en">from zero<br>to live</span><span class="pt">do zero<br>ao vivo</span><span class="es">de cero<br>a en vivo</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" onclick="openModal('modal-wms')">
+                <svg class="project-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zm0 0c-1.8-2.2-3-5-3-9s1.2-6.8 3-9m0 18c1.8-2.2 3-5 3-9s-1.2-6.8-3-9M3.5 9h17M3.5 15h17"/></svg>
+                <h3 class="project-title">
+                    <span class="en">New Market, Full Integration</span>
+                    <span class="pt">Novo Mercado, Integração Completa</span>
+                    <span class="es">Nuevo Mercado, Integración Completa</span>
+                </h3>
+                <p class="project-subtitle en">Leading the technical expansion of a global WMS into a brand new business zone across Central America — from zero to go-live.</p>
+                <p class="project-subtitle pt">Liderando a expansão técnica de um WMS global para uma nova zona de negócios na América Central — do zero ao go-live.</p>
+                <p class="project-subtitle es">Liderando la expansión técnica de un WMS global hacia una nueva zona de negocio en América Central — desde cero hasta el go-live.</p>
+                <div class="project-tags">
+                    <span class="tag">Partner Onboarding</span>
+                    <span class="tag">ERP Integration</span>
+                    <span class="tag">LATAM</span>
+                    <span class="tag">Go-live</span>
+                </div>
+                <span class="project-cta"><span class="en">View case study</span><span class="pt">Ver case</span><span class="es">Ver caso</span></span>
+            </div>
+
+            <div class="project-card" onclick="openModal('modal-innovation')">
+                <svg class="project-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"/></svg>
+                <h3 class="project-title">
+                    <span class="en">Scaling Innovation with External Partners</span>
+                    <span class="pt">Escalando Inovação com Parceiros Externos</span>
+                    <span class="es">Escalando la Innovación con Socios Externos</span>
+                </h3>
+                <p class="project-subtitle en">Building the framework that connected AB InBev's logistics tech area with the startup ecosystem — from sourcing to production.</p>
+                <p class="project-subtitle pt">Construindo o framework que conectou a área de tech de logística da AB InBev ao ecossistema de startups — do sourcing à produção.</p>
+                <p class="project-subtitle es">Construyendo el framework que conectó el área de tech logístico de AB InBev con el ecosistema de startups — desde el sourcing hasta la producción.</p>
+                <div class="project-tags">
+                    <span class="tag">Partner Management</span>
+                    <span class="tag">Innovation</span>
+                    <span class="tag">IoT</span>
+                    <span class="tag">Computer Vision</span>
+                </div>
+                <span class="project-cta"><span class="en">View case study</span><span class="pt">Ver case</span><span class="es">Ver caso</span></span>
+            </div>
+
+            <div class="project-card" onclick="openModal('modal-billing')">
+                <svg class="project-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+                <h3 class="project-title">
+                    <span class="en">AI-Powered Billing Automation</span>
+                    <span class="pt">Faturamento Automatizado com IA</span>
+                    <span class="es">Facturación Automatizada con IA</span>
+                </h3>
+                <p class="project-subtitle en">Automating an industrial distributor's entire billing pipeline — from multi-format order intake to ERP-ready workflow generation — using N8N and AI document processing.</p>
+                <p class="project-subtitle pt">Automatizando todo o pipeline de faturamento de um distribuidor industrial — do recebimento de pedidos em múltiplos formatos à geração de workflows prontos para o ERP — usando N8N e processamento de documentos com IA.</p>
+                <p class="project-subtitle es">Automatizando todo el pipeline de facturación de un distribuidor industrial — desde la recepción de pedidos en múltiples formatos hasta la generación de workflows listos para el ERP — usando N8N y procesamiento de documentos con IA.</p>
+                <div class="project-tags">
+                    <span class="tag">N8N</span>
+                    <span class="tag">AI / LLM</span>
+                    <span class="tag">ERP Integration</span>
+                    <span class="tag">Automation</span>
+                </div>
+                <span class="project-cta"><span class="en">View case study</span><span class="pt">Ver case</span><span class="es">Ver caso</span></span>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── Experience ── -->
+<section id="experience">
+    <div class="section-wrap">
+<p class="section-label"><span class="en">Career</span><span class="pt">Carreira</span><span class="es">Carrera</span></p>
+        <h2 class="section-title"><span class="en">Experience</span><span class="pt">Experiência</span><span class="es">Experiencia</span></h2>
+        <div class="timeline">
+
+            <div class="timeline-item">
+                <p class="timeline-period">11/2025 – Present</p>
+                <p class="timeline-role">Global Product Manager</p>
+                <p class="timeline-company"><span class="en">Anheuser-Busch InBev · São Paulo, Brazil</span><span class="pt">Anheuser-Busch InBev · São Paulo, Brasil</span><span class="es">Anheuser-Busch InBev · São Paulo, Brasil</span></p>
+                <p class="timeline-desc en">Technology reference for South America. Fernando now owns the product strategy for AB InBev's largest global supply chain system — aligning a team of 7 PMs and bridging engineering, business, and global product leadership across 5 countries.</p>
+                <p class="timeline-desc pt">Referência tecnológica para a América do Sul. Fernando é hoje responsável pela estratégia de produto do maior sistema global de supply chain da AB InBev — alinhando uma equipe de 7 PMs e conectando engenharia, negócios e liderança de produto em 5 países.</p>
+                <p class="timeline-desc es">Referencia tecnológica para América del Sur. Fernando es hoy responsable de la estrategia de producto del mayor sistema global de supply chain de AB InBev — alineando un equipo de 7 PMs y conectando ingeniería, negocios y liderazgo de producto en 5 países.</p>
+            </div>
+
+            <div class="timeline-item">
+                <p class="timeline-period">05/2024 – 11/2025</p>
+                <p class="timeline-role">Product Manager</p>
+                <p class="timeline-company"><span class="en">Anheuser-Busch InBev · São Paulo, Brazil</span><span class="pt">Anheuser-Busch InBev · São Paulo, Brasil</span><span class="es">Anheuser-Busch InBev · São Paulo, Brasil</span></p>
+                <p class="timeline-desc en">Took the WMS into Central America — a new business zone with no existing infrastructure and no playbook. Led everything from requirements mapping and ERP integration design to full go-live, driving 90% system adoption across Mexico's operations.</p>
+                <p class="timeline-desc pt">Levou o WMS para a América Central — uma nova zona de negócios sem infraestrutura existente e sem playbook. Liderou tudo: desde o mapeamento de requisitos e design de integração com ERPs até o go-live completo, atingindo 90% de adoção nas operações do México.</p>
+                <p class="timeline-desc es">Llevó el WMS a América Central — una nueva zona de negocios sin infraestructura existente y sin playbook. Lideró todo: desde el mapeo de requisitos y el diseño de integración con ERPs hasta el go-live completo, alcanzando 90% de adopción en las operaciones de México.</p>
+            </div>
+
+            <div class="timeline-item">
+                <p class="timeline-period">05/2022 – 05/2024</p>
+                <p class="timeline-role">Associate Product Manager</p>
+                <p class="timeline-company"><span class="en">Anheuser-Busch InBev · São Paulo, Brazil</span><span class="pt">Anheuser-Busch InBev · São Paulo, Brasil</span><span class="es">Anheuser-Busch InBev · São Paulo, Brasil</span></p>
+                <p class="timeline-desc en">Three squads. Mobile, web, and platform. Full product ownership — from discovery through delivery — on one of the world's most complex logistics systems, operating across multiple markets simultaneously.</p>
+                <p class="timeline-desc pt">Três squads. Mobile, web e plataforma. Ownership total de produto — do discovery à entrega — em um dos sistemas de logística mais complexos do mundo, operando em múltiplos mercados simultaneamente.</p>
+                <p class="timeline-desc es">Tres squads. Mobile, web y plataforma. Ownership total del producto — del discovery a la entrega — en uno de los sistemas logísticos más complejos del mundo, operando en múltiples mercados simultáneamente.</p>
+            </div>
+
+            <div class="timeline-item">
+                <p class="timeline-period">01/2021 – 05/2022</p>
+                <p class="timeline-role">Innovation Project Manager</p>
+                <p class="timeline-company"><span class="en">Anheuser-Busch InBev · São Paulo, Brazil</span><span class="pt">Anheuser-Busch InBev · São Paulo, Brasil</span><span class="es">Anheuser-Busch InBev · São Paulo, Brasil</span></p>
+                <p class="timeline-desc en">Built the funnel that didn't exist. Evaluated 30+ startups, moved 8 into production, managed R$800k in investments — and turned the framework into the area's standard.</p>
+                <p class="timeline-desc pt">Construiu o funil que não existia. Avaliou 30+ startups, levou 8 para produção, gerenciou R$800k em investimentos — e transformou o framework no padrão da área.</p>
+                <p class="timeline-desc es">Construyó el funnel que no existía. Evaluó 30+ startups, llevó 8 a producción, gestionó R$800k en inversiones — y convirtió el framework en el estándar del área.</p>
+            </div>
+
+            <div class="timeline-item">
+                <p class="timeline-period">07/2018 – 01/2021</p>
+                <p class="timeline-role">Director of Operations</p>
+                <p class="timeline-company"><span class="en">Imersa Tech · Minas Gerais, Brazil</span><span class="pt">Imersa Tech · Minas Gerais, Brasil</span><span class="es">Imersa Tech · Minas Gerais, Brasil</span></p>
+                <p class="timeline-desc en">Early stage. Full ambiguity. Built operations at an AI/computer vision startup from the ground up — client acquisition, product delivery, and a ~R$200k contract base.</p>
+                <p class="timeline-desc pt">Estágio inicial. Ambiguidade total. Construiu as operações de uma startup de IA/visão computacional do zero — aquisição de clientes, entrega de produto e uma base de contratos de ~R$200k.</p>
+                <p class="timeline-desc es">Etapa inicial. Ambigüedad total. Construyó las operaciones de una startup de IA/visión computacional desde cero — adquisición de clientes, entrega de producto y una base de contratos de ~R$200k.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ── Education ── -->
+<section id="education">
+    <div class="section-wrap">
+<p class="section-label"><span class="en">Formation</span><span class="pt">Formação</span><span class="es">Formación</span></p>
+        <h2 class="section-title"><span class="en">Education</span><span class="pt">Educação</span><span class="es">Educación</span></h2>
+        <div class="edu-list">
+
+            <div class="edu-item">
+                <h3 class="edu-item-degree">
+                    <span class="en">MBA in Digital Business & Artificial Intelligence</span>
+                    <span class="pt">MBA em Negócios Digitais e Inteligência Artificial</span>
+                    <span class="es">MBA en Negocios Digitales e Inteligencia Artificial</span>
+                </h3>
+                <p class="edu-item-meta en">Universidade de São Paulo — USP · São Paulo, Brazil · 2024–2026</p>
+                <p class="edu-item-meta pt">Universidade de São Paulo — USP · São Paulo, Brasil · 2024–2026</p>
+                <p class="edu-item-meta es">Universidade de São Paulo — USP · São Paulo, Brasil · 2024–2026</p>
+            </div>
+
+            <div class="edu-item">
+                <h3 class="edu-item-degree">
+                    <span class="en">Bachelor's Degree in Industrial Engineering</span>
+                    <span class="pt">Bacharelado em Engenharia de Produção</span>
+                    <span class="es">Licenciatura en Ingeniería Industrial</span>
+                </h3>
+                <p class="edu-item-meta en">Universidade Federal de Juiz de Fora — UFJF · Minas Gerais, Brazil · 2017–2021<br>Academic Exchange · Fox Business School, Temple University · Philadelphia, USA · 2019–2020</p>
+                <p class="edu-item-meta pt">Universidade Federal de Juiz de Fora — UFJF · Minas Gerais, Brasil · 2017–2021<br>Intercâmbio Acadêmico · Fox Business School, Temple University · Philadelphia, EUA · 2019–2020</p>
+                <p class="edu-item-meta es">Universidade Federal de Juiz de Fora — UFJF · Minas Gerais, Brasil · 2017–2021<br>Intercambio Académico · Fox Business School, Temple University · Philadelphia, EE.UU. · 2019–2020</p>
+            </div>
+
+        </div>
+
+        <h3 class="edu-subsection-title"><span class="en">Certificates & Achievements</span><span class="pt">Certificados & Conquistas</span><span class="es">Certificados & Logros</span></h3>
+        <ul class="cert-list">
+            <li class="cert-item">
+                <span class="cert-period">2026</span>
+                <span class="cert-name">AI Product Leaders</span>
+                <span class="cert-institution">Tera</span>
+            </li>
+            <li class="cert-item">
+                <span class="cert-period">2025</span>
+                <span class="cert-name">AI Product Builders</span>
+                <span class="cert-institution">Tera</span>
+            </li>
+            <li class="cert-item">
+                <span class="cert-period">2023</span>
+                <span class="cert-name"><span class="en">Managing Projects and Products with Scrum</span><span class="pt">Gerenciamento de Projetos e Produtos com Scrum</span><span class="es">Gestión de Proyectos y Productos con Scrum</span></span>
+                <span class="cert-institution">FGV</span>
+            </li>
+            <li class="cert-item">
+                <span class="cert-period">2021</span>
+                <span class="cert-name"><span class="en">Product Manager</span><span class="pt">Gerente de Produto</span><span class="es">Product Manager</span></span>
+                <span class="cert-institution">PM3</span>
+            </li>
+            <li class="cert-item">
+                <span class="cert-period">2021</span>
+                <span class="cert-name"><span class="en">Leading Digital Transformation in Organizations</span><span class="pt">Liderando a Transformação Digital nas Organizações</span><span class="es">Liderando la Transformación Digital en Organizaciones</span></span>
+                <span class="cert-institution">MIT</span>
+            </li>
+            <li class="cert-item">
+                <span class="cert-period">2020</span>
+                <span class="cert-name"><span class="en">2nd Place — Brasa Hacks, Silicon Valley</span><span class="pt">2º Lugar — Brasa Hacks, Vale do Silício</span><span class="es">2° Lugar — Brasa Hacks, Silicon Valley</span></span>
+                <span class="cert-institution"><span class="en">Competition for Brazilian students abroad</span><span class="pt">Competição para estudantes brasileiros no exterior</span><span class="es">Competencia para estudiantes brasileños en el exterior</span></span>
+            </li>
+        </ul>
+
+    </div>
+</section>
+
+<!-- ── Skills ── -->
+<section id="skills">
+    <div class="section-wrap">
+<p class="section-label">Expertise</p>
+        <h2 class="section-title"><span class="en">Skills & Tools</span><span class="pt">Habilidades & Ferramentas</span><span class="es">Habilidades & Herramientas</span></h2>
+        <div class="skills-grid">
+            <div class="skill-group">
+                <h3><span class="en">Product</span><span class="pt">Produto</span><span class="es">Producto</span></h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Discovery</span>
+                    <span class="skill-tag">Roadmap</span>
+                    <span class="skill-tag"><span class="en">Stakeholder Management</span><span class="pt">Gestão de Stakeholders</span><span class="es">Gestión de Stakeholders</span></span>
+                    <span class="skill-tag"><span class="en">Partner Onboarding</span><span class="pt">Onboarding de Parceiros</span><span class="es">Onboarding de Socios</span></span>
+                    <span class="skill-tag"><span class="en">Technical Integration</span><span class="pt">Integração Técnica</span><span class="es">Integración Técnica</span></span>
+                    <span class="skill-tag"><span class="en">Agile Delivery</span><span class="pt">Entrega Ágil</span><span class="es">Entrega Ágil</span></span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h3><span class="en">Technical</span><span class="pt">Técnico</span><span class="es">Técnico</span></h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">REST APIs</span>
+                    <span class="skill-tag">SQL / BigQuery</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Shell Scripting</span>
+                    <span class="skill-tag">GitHub</span>
+                    <span class="skill-tag">Docker</span>
+                    <span class="skill-tag">Azure DevOps</span>
+                    <span class="skill-tag">Jira</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h3><span class="en">AI & Productivity</span><span class="pt">IA & Produtividade</span><span class="es">IA & Productividad</span></h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Claude Code</span>
+                    <span class="skill-tag">Cursor</span>
+                    <span class="skill-tag">ChatGPT</span>
+                    <span class="skill-tag">Gemini</span>
+                    <span class="skill-tag">Power BI</span>
+                    <span class="skill-tag">Figma</span>
+                    <span class="skill-tag">Miro</span>
+                </div>
+            </div>
+            <div class="skill-group">
+                <h3><span class="en">Languages</span><span class="pt">Idiomas</span><span class="es">Idiomas</span></h3>
+                <div class="skill-tags">
+                    <span class="skill-tag"><span class="en">Portuguese — Native</span><span class="pt">Português — Nativo</span><span class="es">Portugués — Nativo</span></span>
+                    <span class="skill-tag"><span class="en">English — Fluent</span><span class="pt">Inglês — Fluente</span><span class="es">Inglés — Fluente</span></span>
+                    <span class="skill-tag"><span class="en">Spanish — Fluent</span><span class="pt">Espanhol — Fluente</span><span class="es">Español — Fluente</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Contact ── -->
+<section id="contact">
+    <div class="section-wrap" style="text-align:center">
+<p class="section-label"><span class="en">Get in Touch</span><span class="pt">Entre em Contato</span><span class="es">Contáctame</span></p>
+        <h2 class="section-title"><span class="en">Let's Talk</span><span class="pt">Vamos Conversar</span><span class="es">Hablemos</span></h2>
+        <p class="contact-desc en">Feel free to reach out.</p>
+        <p class="contact-desc pt">Fique à vontade para entrar em contato.</p>
+        <p class="contact-desc es">No dudes en escribirme.</p>
+        <div class="contact-links">
+            <a href="mailto:fernandodealmeidareis@gmail.com" class="contact-link">✉&nbsp; Email</a>
+            <a href="https://www.linkedin.com/in/fernando-reis1/" target="_blank" class="contact-link">in&nbsp; LinkedIn</a>
+            <a id="cv-download-contact" href="resumes/Fernando Reis - Resume (EN).pdf" download class="contact-link">
+                ↓&nbsp;<span class="en">Download CV</span><span class="pt">Baixar CV</span><span class="es">Descargar CV</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p><span class="en">© 2026 Fernando Reis &nbsp;·&nbsp; Built with purpose.</span><span class="pt">© 2026 Fernando Reis &nbsp;·&nbsp; Construído com propósito.</span><span class="es">© 2026 Fernando Reis &nbsp;·&nbsp; Construido con propósito.</span></p>
+</footer>
+
+<!-- ══════════════ MODALS ══════════════ -->
+
+<!-- Modal: WMS -->
+<div class="modal-overlay" id="modal-wms" onclick="closeOnOverlay(event,'modal-wms')">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal('modal-wms')">✕</button>
+        <p class="modal-eyebrow">AB InBev · Global Product Manager</p>
+        <h2 class="modal-title">
+            <span class="en">New Market, Full Integration</span>
+            <span class="pt">Novo Mercado, Integração Completa</span>
+            <span class="es">Nuevo Mercado, Integración Completa</span>
+        </h2>
+        <div class="modal-tags">
+            <span class="tag">Partner Onboarding</span>
+            <span class="tag">ERP Integration</span>
+            <span class="tag">LATAM</span>
+            <span class="tag">Go-live</span>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">The Problem</span><span class="pt">O Problema</span><span class="es">El Problema</span></p>
+            <p class="en">AB InBev needed to expand its Warehouse Management System into Central America — a new business zone with no prior system infrastructure, a different ERP landscape, and unique local operational constraints. There was no existing playbook for this kind of expansion.</p>
+            <p class="pt">A AB InBev precisava expandir seu Sistema de Gestão de Armazéns para a América Central — uma nova zona de negócios sem infraestrutura de sistemas, um cenário de ERP diferente e restrições operacionais locais únicas. Não existia nenhum playbook para esse tipo de expansão.</p>
+            <p class="es">AB InBev necesitaba expandir su Sistema de Gestión de Almacenes a América Central — una nueva zona de negocios sin infraestructura de sistemas previa, un escenario de ERP diferente y restricciones operativas locales únicas. No existía ningún playbook para este tipo de expansión.</p>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">My Role</span><span class="pt">Meu Papel</span><span class="es">Mi Rol</span></p>
+            <p class="en">Global Product Manager — main responsible for translating business needs into product and technical requirements, and for coordinating all integration work between local business partners and central R&D. <strong style="color:var(--text)">Duration: 18 months.</strong></p>
+            <p class="pt">Gerente de Produto Global — principal responsável por traduzir necessidades de negócio em requisitos de produto e técnicos, e por coordenar todo o trabalho de integração entre parceiros locais e a P&D central. <strong style="color:var(--text)">Duração: 18 meses.</strong></p>
+            <p class="es">Product Manager Global — principal responsable de traducir las necesidades de negocio en requisitos de producto y técnicos, y de coordinar todo el trabajo de integración entre los socios locales y el I+D central. <strong style="color:var(--text)">Duración: 18 meses.</strong></p>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">What I Did</span><span class="pt">O que Fiz</span><span class="es">Lo que Hice</span></p>
+            <ul>
+                <li class="en">Mapped the new zone's operational and technical requirements from scratch through direct engagement with local stakeholders</li>
+                <li class="pt">Mapeei os requisitos operacionais e técnicos da nova zona do zero, através de engajamento direto com stakeholders locais</li>
+                <li class="es">Mapeé los requisitos operativos y técnicos de la nueva zona desde cero, mediante engagement directo con stakeholders locales</li>
+                <li class="en">Defined integration architecture with local ERPs, bridging business constraints with engineering capabilities</li>
+                <li class="pt">Defini a arquitetura de integração com os ERPs locais, conectando as restrições de negócio às capacidades de engenharia</li>
+                <li class="es">Definí la arquitectura de integración con los ERPs locales, conectando las restricciones de negocio con las capacidades de ingeniería</li>
+                <li class="en">Coordinated development teams across time zones from initial scoping through to system go-live and partner onboarding</li>
+                <li class="pt">Coordenei equipes de desenvolvimento em fusos horários distintos, do escopo inicial até o go-live e onboarding de parceiros</li>
+                <li class="es">Coordiné equipos de desarrollo en distintos husos horarios, desde el scoping inicial hasta el go-live y el onboarding de socios</li>
+                <li class="en">Structured a rollout and adoption plan with local partners to ensure sustainable usage post-launch</li>
+                <li class="pt">Estruturei um plano de rollout e adoção com parceiros locais para garantir uso sustentável pós-lançamento</li>
+                <li class="es">Estructuré un plan de rollout y adopción con socios locales para garantizar un uso sostenible post-lanzamiento</li>
+            </ul>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">Result</span><span class="pt">Resultado</span><span class="es">Resultado</span></p>
+            <div class="modal-result">
+                <p class="en">Full WMS go-live in Central America. Drove 90% system adoption across Mexico's operations through structured rollout and continuous partner follow-up.</p>
+                <p class="pt">Go-live completo do WMS na América Central. Atingiu 90% de adoção do sistema nas operações do México através de rollout estruturado e acompanhamento contínuo com parceiros.</p>
+                <p class="es">Go-live completo del WMS en América Central. Alcanzó 90% de adopción del sistema en las operaciones de México mediante rollout estructurado y seguimiento continuo con socios.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Karol G -->
+<div class="modal-overlay" id="modal-karolg" onclick="closeOnOverlay(event,'modal-karolg')">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal('modal-karolg')">✕</button>
+        <p class="modal-eyebrow">Con Cora Foundation · Miami, 2026</p>
+        <h2 class="modal-title">
+            <span class="en">Platform Built for Artist Karol G.</span>
+            <span class="pt">Plataforma feita para a artista Karol G.</span>
+            <span class="es">Plataforma creada para la artista Karol G.</span>
+        </h2>
+        <div class="modal-tags">
+            <span class="tag">Product Build</span>
+            <span class="tag">Music Industry</span>
+            <span class="tag">Live Event</span>
+            <span class="tag">Payment Integration</span>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">The Problem</span><span class="pt">O Problema</span><span class="es">El Problema</span></p>
+            <p class="en">The Con Cora Foundation — created by Grammy-nominated artist Karol G to support women and children in vulnerable situations around the world — was organizing a high-profile charity gala in Miami. They needed two things: a seamless guest check-in experience for a high-visibility international event, and a digital fundraising tool to maximize donations on the night. I was invited to contribute to the cause and took full ownership of the technical solution.</p>
+            <p class="pt">A Fundação Con Cora — criada pela artista indicada ao Grammy Karol G para apoiar mulheres e crianças em situação de vulnerabilidade ao redor do mundo — estava organizando uma gala de caridade de alto perfil em Miami. Precisavam de duas coisas: uma experiência de check-in impecável para um evento internacional de alta visibilidade, e uma ferramenta digital de arrecadação para maximizar doações na noite. Fui convidado a contribuir com a causa e assumi a responsabilidade total pela solução técnica.</p>
+            <p class="es">La Fundación Con Cora — creada por la artista nominada al Grammy Karol G para apoyar a mujeres y niños en situación de vulnerabilidad alrededor del mundo — organizaba una gala benéfica de alto perfil en Miami. Necesitaban dos cosas: una experiencia de check-in impecable para un evento internacional de alta visibilidad, y una herramienta digital de recaudación para maximizar donaciones en la noche. Fui invitado a contribuir con la causa y asumí la responsabilidad total de la solución técnica.</p>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">My Role</span><span class="pt">Meu Papel</span><span class="es">Mi Rol</span></p>
+            <p class="en">Sole product and technical owner — responsible for the entire platform from concept to live event. <strong style="color:var(--text)">Duration: 2 months.</strong></p>
+            <p class="pt">Único responsável técnico e de produto — responsável por toda a plataforma do conceito ao evento ao vivo. <strong style="color:var(--text)">Duração: 2 meses.</strong></p>
+            <p class="es">Único responsable técnico y de producto — responsable de toda la plataforma desde el concepto hasta el evento en vivo. <strong style="color:var(--text)">Duración: 2 meses.</strong></p>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">What I Did</span><span class="pt">O que Fiz</span><span class="es">Lo que Hice</span></p>
+            <ul>
+                <li class="en">Scoped all product requirements alongside the foundation team and defined the full tech stack</li>
+                <li class="pt">Levantei todos os requisitos de produto com a equipe da fundação e defini o tech stack completo</li>
+                <li class="es">Levanté todos los requisitos de producto con el equipo de la fundación y definí el tech stack completo</li>
+                <li class="en">Built a guest management system with mobile camera access for QR-based ticket validation at entry</li>
+                <li class="pt">Construí um sistema de gestão de convidados com acesso à câmera do celular para validação de ingressos via QR code na entrada</li>
+                <li class="es">Construí un sistema de gestión de invitados con acceso a la cámara del celular para validación de tickets por QR code en la entrada</li>
+                <li class="en">Developed a digital auction and fundraising module with real-time bidding competition</li>
+                <li class="pt">Desenvolvi um módulo de leilão digital e arrecadação de fundos com competição de lances em tempo real</li>
+                <li class="es">Desarrollé un módulo de subasta digital y recaudación de fondos con competencia de pujas en tiempo real</li>
+                <li class="en">Integrated a streaming layer to extend the event's reach beyond the physical venue</li>
+                <li class="pt">Integrei uma camada de streaming para ampliar o alcance do evento além do espaço físico</li>
+                <li class="es">Integré una capa de streaming para ampliar el alcance del evento más allá del espacio físico</li>
+                <li class="en">Ensured end-to-end platform reliability under live-event pressure with zero margin for downtime</li>
+                <li class="pt">Garanti a confiabilidade da plataforma de ponta a ponta sob a pressão de um evento ao vivo, sem margem para falhas</li>
+                <li class="es">Garanticé la confiabilidad de la plataforma de punta a punta bajo la presión de un evento en vivo, sin margen para fallos</li>
+            </ul>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">Result</span><span class="pt">Resultado</span><span class="es">Resultado</span></p>
+            <div class="modal-result">
+                <p class="en">Throughout the event, the platform was used by 400+ guests to check-in and 60+ donors to bid on auction items. In total, more than one million dollars were raised for the foundation to support women and children in vulnerable situations around the world.</p>
+                <p class="pt">Durante o evento, a plataforma foi utilizada por 400+ convidados para check-in e 60+ doadores para lances no leilão. No total, mais de um milhão de dólares foram arrecadados para a fundação em apoio a mulheres e crianças em situação de vulnerabilidade ao redor do mundo.</p>
+                <p class="es">Durante el evento, la plataforma fue utilizada por 400+ invitados para el check-in y 60+ donantes para pujas en el subasta. En total, más de un millón de dólares fueron recaudados para la fundación en apoyo a mujeres y niños en situación de vulnerabilidad alrededor del mundo.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Innovation Funnel -->
+<div class="modal-overlay" id="modal-innovation" onclick="closeOnOverlay(event,'modal-innovation')">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal('modal-innovation')">✕</button>
+        <p class="modal-eyebrow">AB InBev · Innovation Project Manager</p>
+        <h2 class="modal-title">
+            <span class="en">Scaling Innovation with External Partners</span>
+            <span class="pt">Escalando Inovação com Parceiros Externos</span>
+            <span class="es">Escalando la Innovación con Socios Externos</span>
+        </h2>
+        <div class="modal-tags">
+            <span class="tag">Partner Management</span>
+            <span class="tag">Innovation</span>
+            <span class="tag">IoT</span>
+            <span class="tag">Computer Vision</span>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">The Problem</span><span class="pt">O Problema</span><span class="es">El Problema</span></p>
+            <p class="en">AB InBev's logistics tech area had no structured process to identify, evaluate and track technology projects developed with external startup partners. Promising opportunities were being lost or poorly executed due to the lack of a formal pipeline.</p>
+            <p class="pt">A área de tech de logística da AB InBev não tinha um processo estruturado para identificar, avaliar e acompanhar projetos de tecnologia desenvolvidos com parceiros externos do ecossistema de startups. Oportunidades promissoras estavam sendo perdidas por falta de um pipeline formal.</p>
+            <p class="es">El área de tech logístico de AB InBev no tenía un proceso estructurado para identificar, evaluar y dar seguimiento a proyectos de tecnología desarrollados con socios externos del ecosistema de startups. Oportunidades prometedoras se perdían por falta de un pipeline formal.</p>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">My Role</span><span class="pt">Meu Papel</span><span class="es">Mi Rol</span></p>
+            <p class="en">Innovation Project Manager — responsible for designing and operationalizing the entire partner innovation funnel, from startup sourcing to production delivery. <strong style="color:var(--text)">Duration: 01/2021 – 05/2022.</strong></p>
+            <p class="pt">Gerente de Projetos de Inovação — responsável por desenhar e operacionalizar todo o funil de inovação com parceiros, do sourcing de startups à entrega em produção. <strong style="color:var(--text)">Duração: 01/2021 – 05/2022.</strong></p>
+            <p class="es">Gerente de Proyectos de Innovación — responsable de diseñar y operacionalizar todo el funnel de innovación con socios, desde el sourcing de startups hasta la entrega en producción. <strong style="color:var(--text)">Duración: 01/2021 – 05/2022.</strong></p>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">What I Did</span><span class="pt">O que Fiz</span><span class="es">Lo que Hice</span></p>
+            <ul>
+                <li class="en">Designed the end-to-end innovation funnel: startup sourcing, technical evaluation, pilot structuring and performance tracking</li>
+                <li class="pt">Desenhei o funil de inovação de ponta a ponta: sourcing de startups, avaliação técnica, estruturação de pilotos e acompanhamento de performance</li>
+                <li class="es">Diseñé el funnel de innovación de punta a punta: sourcing de startups, evaluación técnica, estructuración de pilotos y seguimiento de performance</li>
+                <li class="en">Evaluated 30+ startups across technology domains including Computer Vision, RFID, IoT and RTLS</li>
+                <li class="pt">Avaliei 30+ startups em domínios tecnológicos incluindo Visão Computacional, RFID, IoT e RTLS</li>
+                <li class="es">Evalué 30+ startups en dominios tecnológicos incluyendo Visión Computacional, RFID, IoT y RTLS</li>
+                <li class="en">Managed hardware implementation projects from proof-of-concept through to operational deployment</li>
+                <li class="pt">Gerenciei projetos de implementação de hardware do proof-of-concept até a implantação operacional</li>
+                <li class="es">Gestioné proyectos de implementación de hardware desde el proof-of-concept hasta el despliegue operacional</li>
+                <li class="en">Served as the primary bridge between external startup partners and internal engineering and business teams</li>
+                <li class="pt">Atuei como principal ponte entre os parceiros externos (startups) e as equipes internas de engenharia e negócios</li>
+                <li class="es">Actué como principal puente entre los socios externos (startups) y los equipos internos de ingeniería y negocios</li>
+            </ul>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">Result</span><span class="pt">Resultado</span><span class="es">Resultado</span></p>
+            <div class="modal-result">
+                <p class="en">8+ projects moved from pilot to production. Managed R$800k in total innovation investments, delivering ~1.5X ROI across the portfolio. Funnel adopted as the standard framework for the area.</p>
+                <p class="pt">8+ projetos levados do piloto para produção. Gerenciou R$800k em investimentos totais de inovação, entregando ~1,5X de ROI no portfólio. Funil adotado como framework padrão da área.</p>
+                <p class="es">8+ proyectos llevados del piloto a producción. Gestionó R$800k en inversiones totales de innovación, entregando ~1,5X de ROI en el portafolio. Funnel adoptado como framework estándar del área.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Billing Automation -->
+<div class="modal-overlay" id="modal-billing" onclick="closeOnOverlay(event,'modal-billing')">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal('modal-billing')">✕</button>
+        <p class="modal-eyebrow"><span class="en">Industrial Distributor · São Paulo, Brazil</span><span class="pt">Distribuidor Industrial · São Paulo, Brasil</span><span class="es">Distribuidor Industrial · São Paulo, Brasil</span></p>
+        <h2 class="modal-title">
+            <span class="en">AI-Powered Billing Automation</span>
+            <span class="pt">Faturamento Automatizado com IA</span>
+            <span class="es">Facturación Automatizada con IA</span>
+        </h2>
+        <div class="modal-tags">
+            <span class="tag">N8N</span>
+            <span class="tag">AI / LLM</span>
+            <span class="tag">ERP Integration</span>
+            <span class="tag">Automation</span>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">The Problem</span><span class="pt">O Problema</span><span class="es">El Problema</span></p>
+            <p class="en">A mid-sized industrial parts distributor received 200+ purchase orders every day — arriving via email attachments, WhatsApp, and a customer portal — in at least five different formats: PDF, XML, Excel, image scans, and plain text. The billing team was manually reading each document, extracting line items, and typing them into the company's ERP (TOTVS Protheus). The process took an average of 4 hours per day, was prone to keying errors, and created a consistent bottleneck before month-end close.</p>
+            <p class="pt">Um distribuidor médio de peças industriais recebia 200+ pedidos de compra por dia — chegando por anexos de e-mail, WhatsApp e portal do cliente — em pelo menos cinco formatos diferentes: PDF, XML, Excel, scans de imagem e texto simples. A equipe de faturamento lia cada documento manualmente, extraía os itens e os digitava no ERP da empresa (TOTVS Protheus). O processo levava em média 4 horas por dia, estava sujeito a erros de digitação e criava um gargalo recorrente antes do fechamento mensal.</p>
+            <p class="es">Un distribuidor mediano de piezas industriales recibía 200+ órdenes de compra por día — llegando por adjuntos de email, WhatsApp y un portal de clientes — en al menos cinco formatos diferentes: PDF, XML, Excel, escaneos de imágenes y texto plano. El equipo de facturación leía cada documento manualmente, extraía los ítems y los tipeaba en el ERP de la empresa (TOTVS Protheus). El proceso tomaba un promedio de 4 horas por día, era propenso a errores de tipeo y creaba un cuello de botella recurrente antes del cierre mensual.</p>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">My Role</span><span class="pt">Meu Papel</span><span class="es">Mi Rol</span></p>
+            <p class="en">Product and technical lead — responsible for mapping the full billing workflow, designing the automation architecture, and overseeing implementation end-to-end. <strong style="color:var(--text)">Duration: 3 months.</strong></p>
+            <p class="pt">Responsável técnico e de produto — responsável por mapear o fluxo de faturamento completo, desenhar a arquitetura de automação e supervisionar a implementação de ponta a ponta. <strong style="color:var(--text)">Duração: 3 meses.</strong></p>
+            <p class="es">Responsable técnico y de producto — responsable de mapear el flujo de facturación completo, diseñar la arquitectura de automatización y supervisar la implementación de punta a punta. <strong style="color:var(--text)">Duración: 3 meses.</strong></p>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">What I Did</span><span class="pt">O que Fiz</span><span class="es">Lo que Hice</span></p>
+            <ul>
+                <li class="en">Mapped every order entry channel and document format to build a unified ingestion spec</li>
+                <li class="pt">Mapeei todos os canais de entrada de pedidos e formatos de documento para construir uma especificação unificada de ingestão</li>
+                <li class="es">Mapeé todos los canales de entrada de pedidos y formatos de documento para construir una especificación unificada de ingesta</li>
+                <li class="en">Built an N8N workflow to monitor email inboxes, a WhatsApp Business webhook, and the customer portal API — consolidating all incoming files into a single processing queue</li>
+                <li class="pt">Construí um workflow no N8N para monitorar caixas de e-mail, um webhook do WhatsApp Business e a API do portal do cliente — consolidando todos os arquivos recebidos em uma única fila de processamento</li>
+                <li class="es">Construí un workflow en N8N para monitorear bandejas de email, un webhook de WhatsApp Business y la API del portal del cliente — consolidando todos los archivos recibidos en una única cola de procesamiento</li>
+                <li class="en">Integrated an LLM (GPT-4o) via API to read and extract structured data from each document regardless of format — including handwritten scans with low confidence flagged for human review</li>
+                <li class="pt">Integrei um LLM (GPT-4o) via API para ler e extrair dados estruturados de cada documento independentemente do formato — incluindo scans manuscritos com baixa confiança sinalizados para revisão humana</li>
+                <li class="es">Integré un LLM (GPT-4o) vía API para leer y extraer datos estructurados de cada documento independientemente del formato — incluyendo escaneos manuscritos con baja confianza marcados para revisión humana</li>
+                <li class="en">Designed the validation layer: business rules checked SKU codes, quantities, and pricing against the product catalog before any record was sent to the ERP</li>
+                <li class="pt">Desenhei a camada de validação: regras de negócio verificavam códigos de SKU, quantidades e preços contra o catálogo de produtos antes de qualquer registro ser enviado ao ERP</li>
+                <li class="es">Diseñé la capa de validación: reglas de negocio verificaban códigos de SKU, cantidades y precios contra el catálogo de productos antes de que cualquier registro fuera enviado al ERP</li>
+                <li class="en">Built the ERP integration module using TOTVS Protheus REST API to create sales orders automatically upon validation approval</li>
+                <li class="pt">Construí o módulo de integração com o ERP usando a API REST do TOTVS Protheus para criar pedidos de venda automaticamente após a aprovação da validação</li>
+                <li class="es">Construí el módulo de integración con el ERP usando la API REST de TOTVS Protheus para crear órdenes de venta automáticamente tras la aprobación de la validación</li>
+            </ul>
+        </div>
+        <div class="modal-block">
+            <p class="modal-block-title"><span class="en">Result</span><span class="pt">Resultado</span><span class="es">Resultado</span></p>
+            <div class="modal-result">
+                <p class="en">Manual billing time dropped from 4 hours to under 20 minutes per day. The pipeline processed 94% of orders fully automatically, with the remaining 6% routed to a human review queue. Error rate on ERP entries fell by 91%. The team redirected the recovered time toward customer relationship and exception handling — and month-end close moved from a stressful 2-day crunch to a routine operation.</p>
+                <p class="pt">O tempo de faturamento manual caiu de 4 horas para menos de 20 minutos por dia. O pipeline processou 94% dos pedidos de forma totalmente automática, com os 6% restantes encaminhados para uma fila de revisão humana. A taxa de erros nos lançamentos do ERP caiu 91%. A equipe redirecionou o tempo recuperado para relacionamento com clientes e tratamento de exceções — e o fechamento mensal passou de uma correria estressante de 2 dias para uma operação rotineira.</p>
+                <p class="es">El tiempo de facturación manual cayó de 4 horas a menos de 20 minutos por día. El pipeline procesó 94% de los pedidos de forma totalmente automática, con el 6% restante derivado a una cola de revisión humana. La tasa de errores en los registros del ERP cayó un 91%. El equipo redirigió el tiempo recuperado hacia relaciones con clientes y manejo de excepciones — y el cierre mensual pasó de una corrida estresante de 2 días a una operación rutinaria.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ── Mobile menu ──
+    function toggleMobileMenu() {
+        document.getElementById('hamburger').classList.toggle('open');
+        document.getElementById('mobile-menu').classList.toggle('open');
+    }
+    function closeMobileMenu() {
+        document.getElementById('hamburger').classList.remove('open');
+        document.getElementById('mobile-menu').classList.remove('open');
+    }
+
+    // ── CV download links ──
+    var CV_EN = 'resumes/Fernando Reis - Resume (EN).pdf';
+    var CV_PT = 'resumes/Fernando Reis - Currículo (PT).pdf';
+    function updateCvLinks(lang) {
+        var href = lang === 'pt' ? CV_PT : CV_EN;
+        document.getElementById('cv-download-hero').href = href;
+        document.getElementById('cv-download-contact').href = href;
+    }
+
+    // ── Language selector ──
+    function setLang(lang) {
+        document.documentElement.classList.remove('lang-pt', 'lang-es');
+        if (lang === 'pt') document.documentElement.classList.add('lang-pt');
+        if (lang === 'es') document.documentElement.classList.add('lang-es');
+        localStorage.setItem('lang', lang);
+        updateCvLinks(lang);
+        document.querySelectorAll('.lang-opt').forEach(function(btn) {
+            btn.classList.toggle('active', btn.dataset.lang === lang);
+        });
+    }
+    (function () {
+        var saved = localStorage.getItem('lang');
+        var lang = 'en';
+        if (saved === 'pt' || saved === 'es' || saved === 'en') {
+            lang = saved;
+        } else {
+            var browser = (navigator.language || navigator.userLanguage || '').toLowerCase();
+            if (browser.startsWith('pt')) lang = 'pt';
+            else if (browser.startsWith('es')) lang = 'es';
+        }
+        setLang(lang);
+    })();
+
+    // ── Modals ──
+    function openModal(id) {
+        document.getElementById(id).classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    function closeOnOverlay(e, id) {
+        if (e.target === e.currentTarget) closeModal(id);
+    }
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal-overlay.active').forEach(m => {
+                m.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
